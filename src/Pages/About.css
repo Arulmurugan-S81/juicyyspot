@@ -1,12 +1,12 @@
 /* Container Styles */
 .juice-shop-container {
-  background-color:  #C1D0B5; /* Light grey background */
   padding: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  
 }
 
 h1 {
@@ -23,6 +23,7 @@ h1 {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
+  background-color:  #99A98F;
 }
 
 .form-group {
@@ -46,13 +47,13 @@ input {
 }
 
 input:focus {
-  border-color: #007bff;
+  border-color: yellow;
   outline: none;
 }
 
 button {
-  background-color: #28a745; /* Green background for the button */
-  color: white;
+  background-color: white; /* Green background for the button */
+  color: black;
   padding: 0.8rem;
   font-size: 1.1rem;
   border: none;
@@ -63,7 +64,8 @@ button {
 }
 
 button:hover {
-  background-color: #218838;
+  background-color:black;
+  color: white;
 }
 
 /* Success/Error Messages */

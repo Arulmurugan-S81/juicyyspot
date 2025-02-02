@@ -1,539 +1,156 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React from 'react';
-import p1 from './image/apple.png'
-import p2 from './image/ABC.png'
-import p3 from './image/Asparagus.png'
-import p4 from './image/avocado.png'
-import p5 from  './image/banana.png'
-import p6 from './image/beetroot.png'
-import p7 from './image/bell pepper.png'
-import p8 from './image/carrot.png'
-import p9 from './image/cucumber.png'
-import p10 from './image/dargon fruit.png'
-import p11 from './image/fig.png'
-import p12 from './image/grapes.png'
-import p13 from './image/guava.png'
-import p14 from './image/kiwi.png'
-import p15 from './image/lemon.png'
-import p16 from './image/mango.png'
-import p17 from './image/mushmelon.png'
-import p18 from './image/orange.png'
-import p19 from './image/papaya.png'
-import p20 from './image/peach.png'
-import p21 from './image/pineapple.png'
-import p22 from './image/pomogranet.png'
-import p23 from './image/pumkin.png'
-import p26 from './image/straberry.png'
-import p27 from './image/tomato.png'
-import p28 from './image/watermelon.png'
-import p24 from './image/peer.png'
-import p25 from './image/sapota.png'
-import  { useState } from 'react';
-import './Blogs.css'
+import { useState } from 'react';
+import './Blogs.css';
 
+// Import fruit images
+import p1 from './image/apple.png';
+import p4 from './image/avocado.png';
+import p5 from './image/banana.png';
+import p10 from './image/dargon fruit.png';
+import p11 from './image/fig.png';
+import p12 from './image/grapes.png';
+import p13 from './image/guava.png';
+import p14 from './image/kiwi.png';
+import p15 from './image/lemon.png';
+import p16 from './image/mango.png';
+import p17 from './image/mushmelon.png';
+import p18 from './image/orange.png';
+import p19 from './image/papaya.png';
+import p20 from './image/peach.png';
+import p24 from './image/peer.png';
+import p25 from './image/sapota.png';
+import p26 from './image/straberry.png';
+import p28 from './image/watermelon.png';
+import p21 from './image/pineapple.png';
+import p22 from './image/pomogranet.png';
+
+// Import vegetable images
+import v1 from './image/Asparagus.png';
+import v8 from './image/ABC.png';
+import v2 from './image/beetroot.png';
+import v3 from './image/bell pepper.png';
+import v4 from './image/carrot.png';
+import v5 from './image/cucumber.png';
+import v6 from './image/pumkin.png';
+import v7 from './image/tomato.png';
+
+// Fruits data
 const products = [
   { id: 1, name: 'Apple', price: 100, image: p1 },
   { id: 2, name: 'Avocado', price: 120, image: p4 },
   { id: 3, name: 'Banana', price: 50, image: p5 },
   { id: 4, name: 'Dragon Fruit', price: 135, image: p10 },
   { id: 5, name: 'Fig', price: 150, image: p11 },
-  // Add more products here...
+  { id: 6, name: 'Grapes', price: 65, image: p12 },
+  { id: 7, name: 'Guava', price: 75, image: p13 },
+  { id: 8, name: 'Kiwi', price: 155, image: p14 },
+  { id: 9, name: 'Lemon', price: 45, image: p15 },
+  { id: 10, name: 'Mango', price: 85, image: p16 },
+  { id: 11, name: 'Muskmelon', price: 80, image: p17 },
+  { id: 12, name: 'Orange', price: 60, image: p18 },
+  { id: 13, name: 'Papaya', price: 70, image: p19 },
+  { id: 14, name: 'Peach', price: 100, image: p20 },
+  { id: 15, name: 'Pear', price: 75, image: p24 },
+  { id: 16, name: 'Sapota', price: 45, image: p25 },
+  { id: 17, name: 'Strawberry', price: 170, image: p26 },
+  { id: 18, name: 'Watermelon', price: 45, image: p28 },
+  { id: 19, name: 'Pineapple', price: 130, image: p21 },
+  { id: 20, name: 'Pomegranate', price: 160, image: p22 },
 ];
-const Blogs = () => {
+
+// Vegetables data
+const vegetables = [
+  { id: 28, name: 'ABC', price: 90, image: v8 },
+  { id: 21, name: 'Asparagus', price: 90, image: v1 },
+  { id: 22, name: 'Beetroot', price: 55, image: v2 },
+  { id: 23, name: 'Bell Pepper', price: 80, image: v3 },
+  { id: 24, name: 'Carrot', price: 60, image: v4 },
+  { id: 25, name: 'Cucumber', price: 45, image: v5 },
+  { id: 26, name: 'Pumpkin', price: 70, image: v6 },
+  { id: 27, name: 'Tomato', price: 50, image: v7 },
+];
+
+const Blogs = ({ cart, setCart }) => {
+  if (!setCart) {
+    console.error("setCart is undefined! Make sure you're passing it from App.js");
+    return null;  // Prevent further execution if setCart is missing
+  }
+
+  const addToCart = (product) => {
+    const confirmation = window.confirm(`Do you want to add ${product.name} to your cart?`);
+  
+    if (confirmation) {
+      const existingProduct = cart.find((item) => item.id === product.id);
+  
+      if (existingProduct) {
+        const updatedCart = cart.map((item) =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+        setCart(updatedCart);
+      } else {
+        setCart([...cart, { ...product, quantity: 1 }]);
+      }
+  
+      alert(`${product.name} has been added to your cart!`);
+    }
+  };
+  
+
   return (
-    <div>
-      {/* Heading */}
-      <h1 className="text-center my-5" style={{color:" #ffcc00"}}>Products</h1>
-
-      {/* Card Grid */}
-      <div className="container mt-5">
-        <div className="row">
-          {/* Card 1 */}
-          <div className="col-md-3 mb-4">
+    <div className="container mt-5">
+      {/* Fruits Section */}
+      <h1 className="text-center my-5" style={{ color: "#ffcc00" }}>FRUITS</h1>
+      <div className="row">
+        {products.map((product) => (
+          <div className="col-md-3 mb-4" key={product.id}>
             <div className="card" style={{ width: '100%' }}>
-            <div className="image1" >
-              <img src={p1} className="card-img-top" alt="Card Image" />
+              <div className="image1">
+                <img src={product.image} className="card-img-top" alt={product.name} />
               </div>
               <div className="card-body">
-                <h5 className="card-title">Apple</h5>
-                <p className="card-text">  250 ml
-          <p><span className="off">₹120</span> |<span className="off1" >₹100</span> &nbsp;<span className="off2">12%offer</span></p> 
-        </p>
-        <a href="#" className="btn">Order Now</a>
+                <h5 className="card-title">{product.name}</h5>
+                <p className="card-text">250 gm</p>
+                <p>
+                  <span className="off">₹{Math.round(product.price * 1.12)}</span> |
+                  <span className="off1">₹{product.price}</span> &nbsp;
+                  <span className="off2">10% off</span>
+                </p>
+                <button className="btn" style={{ borderColor: "black" }} onClick={() => addToCart(product)}>
+                  Order Now
+                </button>
               </div>
             </div>
           </div>
-
-          {/* Card 2 */}
-          <div className="col-md-3 mb-4">
-  <div className="card" style={{ width: '100%',}}>
-    <div className="image1" >
-      <img src={p4} className="card-img-top" alt="Card Image" style={{borderRadius: "10px"}} />
-    </div>
-    <div className="card-body">
-      <h5 className="card-title">Avocado</h5>
-      <p className="card-text">
-        250 ml
-        <br />
-        <span className="off">₹150</span> | <span className="off1">₹120</span> &nbsp;
-        <span className="off2">20% off</span>
-      </p>
-      <a href="#" className="btn">Order Now</a>
-    </div>
-  </div>
-</div>
-
-
-          {/* Card 3 */}
-          <div className="col-md-3 mb-4">
-            <div className="card" style={{ width: '100%' }}>
-            <div className="image1" >
-              <img src={p5} className="card-img-top" alt="Card Image" />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">Banana</h5>
-                <p className="card-text">  250 ml
-          <p><span  className="off">₹60</span> |<span className="off1" >₹50</span> &nbsp;<span  className="off2">10%offer</span></p> 
-        </p>
-        <a href="#" className="btn">Order Now</a>
-              </div>
-            </div>
-          </div>
-
-          {/* Card 4 */}
-          <div className="col-md-3 mb-4">
-            <div className="card" style={{ width: '100%' }}>
-            <div className="image1" >
-              <img src={p10} className="card-img-top" alt="Card Image" />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">Dargon Fruit</h5>
-                <p className="card-text">  250 ml
-          <p><span  className="off">₹160</span> |<span className="off1" >₹135</span> &nbsp;<span className="off2">15%offer</span></p> 
-        </p>
-        <a href="#" className="btn">Order Now</a>
-              </div>
-            </div>
-          </div>
-            {/* Card 1 */}
-            <div className="col-md-3 mb-4">
-            <div className="card" style={{ width: '100%' }}>
-            <div className="image1" >
-              <img src={p11} className="card-img-top" alt="Card Image" />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">Fig</h5>
-                <p className="card-text">  250 ml
-          <p><span  className="off">₹180</span> |<span className="off1"  >₹150</span> &nbsp;<span className="off2">20%offer</span></p> 
-        </p>
-        <a href="#" className="btn">Order Now</a>
-              </div>
-            </div>
-          </div>
-
-          {/* Card 2 */}
-          <div className="col-md-3 mb-4">
-            <div className="card" style={{ width: '100%' }}>
-            <div className="image1" >
-              <img src={p12} className="card-img-top" alt="Card Image" />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">Grapes</h5>
-                <p className="card-text">  250 ml
-          <p><span  className="off">₹80</span> |<span className="off1" >₹65</span> &nbsp;<span className="off2">15%offer</span></p> 
-        </p>
-        <a href="#" className="btn">Order Now</a>
-              </div>
-            </div>
-          </div>
-
-          {/* Card 3 */}
-          <div className="col-md-3 mb-4">
-            <div className="card" style={{ width: '100%' }}>
-            <div className="image1" >
-              <img src={p13} className="card-img-top" alt="Card Image" />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">Guava</h5>
-                <p className="card-text">  250 ml
-          <p><span className="off" >₹90</span> |<span className="off1"  >₹75</span> &nbsp;<span className="off2">15%offer</span></p> 
-        </p>
-        <a href="#" className="btn">Order Now</a>
-              </div>
-            </div>
-          </div>
-
-          {/* Card 4 */}
-          <div className="col-md-3 mb-4">
-            <div className="card" style={{ width: '100%' }}>
-            <div className="image1" >
-              <img src={p14} className="card-img-top" alt="Card Image" />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">kiwi</h5>
-                <p className="card-text">  250 ml
-          <p><span  className="off">₹170</span> |<span className="off1" >₹155</span> &nbsp;<span className="off2">15%offer</span></p> 
-        </p>
-        <a href="#" className="btn">Order Now</a>
-              </div>
-            </div>
-          </div>
-
-           {/* Card 1 */}
-           <div className="col-md-3 mb-4">
-            <div className="card" style={{ width: '100%' }}>
-            <div className="image1" >
-              <img src={p15} className="card-img-top" alt="Card Image" />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">Lemon</h5>
-                <p className="card-text">  250 ml
-          <p><span  className="off">₹50</span> |<span className="off1" >₹45</span> &nbsp;<span className="off2">10%offer</span></p> 
-        </p>
-        <a href="#" className="btn">Order Now</a>
-              </div>
-            </div>
-          </div>
-
-          {/* Card 2 */}
-          <div className="col-md-3 mb-4">
-            <div className="card" style={{ width: '100%' }}>
-            <div className="image1" >
-              <img src={p16} className="card-img-top" alt="Card Image" />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">Mango</h5>
-                <p className="card-text">  250 ml
-          <p><span className="off" >₹100</span> |<span className="off1" >₹85</span> &nbsp;<span className="off2">15%offer</span></p> 
-        </p>
-        <a href="#" className="btn">Order Now</a>
-              </div>
-            </div>
-          </div>
-
-          {/* Card 3 */}
-          <div className="col-md-3 mb-4">
-            <div className="card" style={{ width: '100%' }}>
-            <div className="image1" >
-              <img src={p17} className="card-img-top" alt="Card Image" />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">Muskmelon</h5>
-                <p className="card-text">  250 ml
-          <p><span  className="off">₹90</span> |<span className="off1"  >₹80</span> &nbsp;<span className="off2">12%offer</span></p> 
-        </p>
-                <a href="#" className="btn">Order Now</a>
-              </div>
-            </div>
-          </div>
-
-          {/* Card 4 */}
-          <div className="col-md-3 mb-4">
-            <div className="card" style={{ width: '100%' }}>
-            <div className="image1" >
-              <img src={p18} className="card-img-top" alt="Card Image" />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">Orange</h5>
-                <p className="card-text">  250 ml
-          <p><span  className="off">₹70</span> |<span className="off1" >₹60</span> &nbsp;<span className="off2">15%offer</span></p> 
-        </p>
-        <a href="#" className="btn">Order Now</a>
-              </div>
-            </div>
-          </div>
-            {/* Card 1 */}
-            <div className="col-md-3 mb-4">
-            <div className="card" style={{ width: '100%' }}>
-            <div className="image1" >
-              <img src={p19} className="card-img-top" alt="Card Image" />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">papaya</h5>
-                <p className="card-text">  250 ml
-          <p><span  className="off">₹80</span> |<span className="off1" >₹70</span> &nbsp;<span className="off2">12%offer</span></p> 
-        </p>
-        <a href="#" className="btn">Order Now</a>
-              </div>
-            </div>
-          </div>
-
-          {/* Card 2 */}
-          <div className="col-md-3 mb-4">
-            <div className="card" style={{ width: '100%' }}>
-              <div className="image1" >
-              <img src={p20} className="card-img-top" alt="Card Image" />
-            </div>
-              <div className="card-body">
-                <h5 className="card-title">peach</h5>
-                <p className="card-text">  250 ml
-          <p><span  className="off">₹120</span> |<span className="off1"  >₹100</span> &nbsp;<span className="off2">15%offer</span></p> 
-        </p>
-        <a href="#" className="btn">Order Now</a>
-              </div>
-            </div>
-          </div>
-
-          {/* Card 3 */}
-          <div className="col-md-3 mb-4">
-            <div className="card" style={{ width: '100%' }}>
-              <div className="image1" >
-              <img src={p24} className="card-img-top" alt="Card Image" />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">peer</h5>
-                <p className="card-text">  250 ml
-          <p><span className="off" >₹90</span> |<span className="off1" >₹75</span> &nbsp;<span className="off2">15%offer</span></p> 
-        </p>
-        <a href="#" className="btn">Order Now</a>
-              </div>
-            </div>
-          </div>
-
-          {/* Card 4 */}
-          <div className="col-md-3 mb-4">
-            <div className="card" style={{ width: '100%' }}>
-            <div className="image1" >
-              <img src={p25} className="card-img-top" alt="Card Image" />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">Sapota</h5>
-                <p className="card-text">  250 ml
-          <p><span  className="off">₹50</span> |<span className="off1" >₹45</span> &nbsp;<span className="off2">10%offer</span></p> 
-        </p>
-        <a href="#" className="btn">Order Now</a>
-              </div>
-            </div>
-          </div>
-
-            {/* Card 1 */}
-            <div className="col-md-3 mb-4">
-            <div className="card" style={{ width: '100%' }}>
-            <div className="image1" >
-              <img src={p26} className="card-img-top" alt="Card Image" />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">Strawberry</h5>
-                <p className="card-text">  250 ml
-          <p><span  className="off">₹200</span> |<span className="off1"  >₹170</span> &nbsp;<span className="off2">15%offer</span></p> 
-        </p>
-        <a href="#" className="btn">Order Now</a>
-              </div>
-            </div>
-          </div>
-
-          {/* Card 2 */}
-          <div className="col-md-3 mb-4">
-            <div className="card" style={{ width: '100%' }}>
-            <div className="image1" >
-              <img src={p28} className="card-img-top" alt="Card Image" />
-
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">Watermelon</h5>
-                <p className="card-text">  250 ml
-          <p><span  className="off">₹50</span> |<span className="off1" >₹45</span> &nbsp;<span className="off2">10%offer</span></p> 
-        </p>
-        <a href="#" className="btn">Order Now</a>
-              </div>
-            </div>
-          </div>
-
-          
-          {/* Card 3 */}
-          <div className="col-md-3 mb-4">
-            <div className="card" style={{ width: '100%' }}>
-            <div className="image1" >
-              <img src={p21} className="card-img-top" alt="Card Image" />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">Pineapple</h5>
-                <p className="card-text">  250 ml
-          <p><span className="off" >₹150</span> |<span className="off1" >₹130</span> &nbsp;<span className="off2">13%offer</span></p> 
-        </p>
-        <a href="#" className="btn">Order Now</a>
-              </div>
-            </div>
-          </div>
-
-          {/* Card 4 */}
-          <div className="col-md-3 mb-4">
-            <div className="card" style={{ width: '100%' }}>
-              <div className="image1" >
-              <img src={p22} className="card-img-top" alt="Card Image" />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">Pomogranet</h5>
-                <p className="card-text">  250 ml
-          <p><span  className="off">₹180</span> |<span className="off1" >₹160</span> &nbsp;<span className="off2">12%offer</span></p> 
-        </p>
-        <a href="#" className="btn">Order Now</a>
-              </div>
-            </div>
-          </div>
-
-
-          {/* Additional cards can follow the same pattern */}
-        </div>
+        ))}
       </div>
 
-
-<h1 style={{color:" #ffcc00"}}>VEGETABLES</h1>
-      <div className="container mt-5">
-        <div className="row">
-          {/* Card 1 */}
-          <div className="col-md-3 mb-4">
+      {/* Vegetables Section */}
+      <h1 className="text-center my-5" style={{ color: "#ffcc00" }}>VEGETABLES</h1>
+      <div className="row">
+        {vegetables.map((product) => (
+          <div className="col-md-3 mb-4" key={product.id}>
             <div className="card" style={{ width: '100%' }}>
-            <div className="image1" >
-              <img src={p2} className="card-img-top" alt="Card Image" />
+              <div className="image1">
+                <img src={product.image} className="card-img-top" alt={product.name} />
               </div>
               <div className="card-body">
-                <h5 className="card-title">ABC</h5>
-                <p className="card-text">  250 ml
-          <p><span  className="off">₹130</span> |<span className="off1" >₹100</span> &nbsp;<span className="off2">20%offer</span></p> 
-        </p> 
-        <a href="#" className="btn">Order Now</a> 
+                <h5 className="card-title">{product.name}</h5>
+                <p className="card-text">250 gm</p>
+                <p>
+                  <span className="off">₹{Math.round(product.price * 1.12)}</span> |
+                  <span className="off1">₹{product.price}</span> &nbsp;
+                  <span className="off2">10% off</span>
+                </p>
+                <button className="btn" style={{ borderColor: "black" }} onClick={() => addToCart(product)}>
+                  Order Now
+                </button>
               </div>
             </div>
           </div>
-          <div className="col-md-3 mb-4">
-            <div className="card" style={{ width: '100%' }}>
-            <div className="image1" >
-              <img src={p3} className="card-img-top" alt="Card Image" />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">Asparagus</h5>
-                <p className="card-text">  250 ml
-          <p><span  className="off">₹80</span> |<span className="off1" >₹50</span> &nbsp;<span className="off2">15%offer</span></p> 
-        </p>
-        <a href="#" className="btn">Order Now</a>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-3 mb-4">
-            <div className="card" style={{ width: '100%' }}>
-            <div className="image1" >
-              <img src={p6} className="card-img-top" alt="Card Image" />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">Beetroot</h5>
-                <p className="card-text">  250 ml
-          <p><span  className="off">₹60</span> |<span className="off1" >₹50</span> &nbsp;<span className="off2">12%offer</span></p> 
-        </p>
-        <a href="#" className="btn">Order Now</a>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-3 mb-4">
-            <div className="card" style={{ width: '100%' }}>
-            <div className="image1" >
-              <img src={p7} className="card-img-top" alt="Card Image" />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">Bell pepper</h5>
-                <p className="card-text">  250 ml
-          <p><span  className="off">₹90</span> |<span className="off1" >₹75</span> &nbsp;<span className="off2">15%offer</span></p> 
-        </p>
-        <a href="#" className="btn">Order Now</a>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-3 mb-4">
-            <div className="card" style={{ width: '100%' }}>
-            <div className="image1" >
-              <img src={p8} className="card-img-top" alt="Card Image" />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">Carrot</h5>
-                <p className="card-text">  250 ml
-          <p><span  className="off">₹70</span> |<span className="off1" >₹60</span> &nbsp;<span className="off2">10%offer</span></p> 
-        </p>
-        <a href="#" className="btn">Order Now</a>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-3 mb-4">
-            <div className="card" style={{ width: '100%' }}>
-            <div className="image1" >
-              <img src={p9} className="card-img-top" alt="Card Image" />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">Cucumber</h5>
-                <p className="card-text">  250 ml
-          <p><span  className="off">₹50</span> |<span className="off1" >₹45</span> &nbsp;<span className="off2">10%offer</span></p> 
-        </p>
-        <a href="#" className="btn">Order Now</a>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-3 mb-4">
-            <div className="card" style={{ width: '100%' }}>
-            <div className="image1" >
-              <img src={p23} className="card-img-top" alt="Card Image" />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">Pumpkin</h5>
-                <p className="card-text">  250 ml
-          <p><span  className="off">₹80</span> |<span className="off1" >₹60</span> &nbsp;<span className="off2">10%offer</span></p> 
-        </p>
-        <a href="#" className="btn">Order Now</a>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-3 mb-4">
-            <div className="card" style={{ width: '100%' }}>
-            <div className="image1" >
-              <img src={p27} className="card-img-top" alt="Card Image" />
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">Tomato</h5>
-                <p className="card-text">  250 ml
-          <p><span  className="off">₹60</span> |<span className="off1" >₹50</span> &nbsp;<span className="off2">12%offer</span></p> 
-        </p>
-                <a href="#" className="btn">Order Now</a>
-              </div>
-            </div>
-          </div>
-         
-          </div>
-          </div>
-          
-  
-   {/* {
-      
-        let cartString = localStorage.getItem("cart") || "";
-
-    
-        const product = products.find(p => p.id === productId);
-        if (!product) {
-            console.error("Product not found");
-            return;
-        }
-
-  
-        const regex = new RegExp(`${productId}:(\\d+)`);
-        const match = cartString.match(regex);
-
-        if (match) {
-          
-            const currentQuantity = parseInt(match[1]);
-            cartString = cartString.replace(regex, `${productId}:${currentQuantity + 1}`);
-        } else {
-    
-            cartString += `${productId}:1;`;
-        }
-
-    
-        localStorage.setItem("cart", cartString);
-        alert("Product added to cart");
-
-    function goToCartPage() {
-        window.location.href = "cart1.html";
-    } */}
-
+        ))}
+      </div>
     </div>
   );
 };
 
 export default Blogs;
- 

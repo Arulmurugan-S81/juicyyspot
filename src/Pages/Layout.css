@@ -39,7 +39,7 @@ i {
 }
 
 .navbar-toggler-icon {
-  background-color:#99A98F; /* Complementary yellow for the icon */
+  background-color:#99A98F; 
 }
 
 /* Offcanvas styles */
@@ -97,11 +97,9 @@ li i:hover {
 }
 
 .btn {
-
-  /* border-color: #333; */
-  /* color: black; */
+   border-color: red;
+  color: black;
   margin-top: 4px;
-
 }
 
 .btn:hover {

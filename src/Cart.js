@@ -1,47 +1,84 @@
-import React from 'react';
+import React from "react";
+import './Cart.css';
 
-const Cart = () => {
-  const [cart, setCart] = React.useState(JSON.parse(localStorage.getItem('cart')) || []);
+const Cart = ({ cart, setCart }) => {
+  if (!setCart) {
+    console.error("setCart is undefined in Cart component!");
+    return null;
+  }
 
-  // You can store the cart in localStorage or state
-  React.useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }, [cart]);
+  const increaseQuantity = (productId) => {
+    setCart(
+      cart.map((item) =>
+        item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
+      )
+    );
+  };
+
+  const decreaseQuantity = (productId) => {
+    setCart(
+      cart
+        .map((item) =>
+          item.id === productId
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
+        )
+        .filter((item) => item.quantity > 0)
+    );
+  };
+
+  const clearCart = () => {
+    setCart([]);
+  };
+
+  const totalAmount = cart.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
 
   return (
-    <div>
-      <h1 className="text-center my-5" style={{ color: "#ffcc00" }}>Cart</h1>
-      <div className="container mt-5">
-        <div className="row">
-          {cart.length === 0 ? (
-            <p>Your cart is empty</p>
-          ) : (
-            cart.map((product, index) => (
-              <div className="col-md-3 mb-4" key={index}>
-                <div className="card" style={{ width: '100%' }}>
-                  <div className="image1">
-                    <img src={product.image} className="card-img-top" alt="Card Image" />
-                  </div>
-                  <div className="card-body">
-                    <h5 className="card-title">{product.name}</h5>
-                    <p className="card-text">
-                      250 ml
-                      <br />
-                      <span className="off">₹{product.price + 20}</span> |{' '}
-                      <span className="off1">₹{product.price}</span>
-                    </p>
-                    {/* <button className="btn" onClick={() => removeFromCart(product)}>
-                      Remove from Cart
-                    </button> */}
-                  </div>
-                </div>
+    <div className="container mt-5">
+      <h1 className="text-center my-4" style={{ fontWeight: "bold" }}>
+        Your Shopping Cart
+      </h1>
+  
+      {cart.length === 0 ? (
+        <h3 className="text-center">Cart is empty</h3>
+      ) : (
+        <div className="cart-container">
+          {cart.map((item) => (
+            <div className="cart-item" key={item.id}>
+              <img src={item.image} alt={item.name} className="cart-item-image" />
+              <div className="cart-item-details">
+                <h5>{item.name}</h5>
               </div>
-            ))
-          )}
+              <div className="cart-item-quantity">
+                <button className="btn btn-outline-danger" onClick={() => decreaseQuantity(item.id)}>
+                  -
+                </button>
+                <span className="mx-2">x{item.quantity}</span>
+                <button className="btn btn-outline-success" onClick={() => increaseQuantity(item.id)}>
+                  +
+                </button>
+              </div>
+              <div className="cart-item-price">₹{(item.price * item.quantity).toFixed(2)}</div>
+            </div>
+          ))}
+  
+          <div className="cart-total text-end">
+            Total: <span className="text-danger">₹{totalAmount.toFixed(2)}</span>
+          </div>
+  
+          <div className="cart-buttons">
+            <button className="btn " onClick={clearCart}>Clear Cart</button>
+            <button className="btn ">Buy Now</button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
+  
+  
 };
 
 export default Cart;

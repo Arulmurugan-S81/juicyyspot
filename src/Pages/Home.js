@@ -5,6 +5,7 @@ import c2 from './image/2.png';
 import c3 from './image/home 2.png'
 import c4 from './image/5.jpg';
 import c5 from './image/6.avif';
+import { Link } from 'react-router-dom';
 
 
 
@@ -66,7 +67,7 @@ const Home = () => {
         </button>
       </div>
 <br></br>
-      <h1 className="home" style={{color:" #ffcc00"}}>Home</h1>
+     <Link className="nav-link" to="/Home"> <h1 className="home" style={{color:" #ffcc00"}}>Home</h1></Link>
       {/* container */}
       <div className="container mt-5">
   <div className="row">

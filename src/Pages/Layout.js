@@ -44,7 +44,7 @@ const Layout = () => {
                 placeholder="Search"
                 aria-label="Search"
               />
-              <button className="btn " type="submit">Search</button>
+              <button className="btn" type="submit">Search</button>
             </form>
             &nbsp;&nbsp;&nbsp;
             <Link className="nav-link" to="/Cart">

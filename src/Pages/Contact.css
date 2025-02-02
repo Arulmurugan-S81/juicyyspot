@@ -68,18 +68,19 @@
   }
   
   .send-btn {
-    background-color: #ffcc00;
-    color: white;
+    background-color:#99A98F;
+    color: black;
     padding: 10px 20px;
-    border: none;
+    border: black;
     border-radius: 5px;
     font-size: 1rem;
     cursor: pointer;
+    width: 400px;
   }
   
   .send-btn:hover {
-    background-color: yellow;
-    color: black;
+    background-color: black;
+    color: white;
   }
   
   /* Responsive Design */
